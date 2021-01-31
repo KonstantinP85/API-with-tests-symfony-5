@@ -42,4 +42,6 @@ class CategoryController extends BaseController
 
         return $this->respond($category);
     }
+
+
 }
