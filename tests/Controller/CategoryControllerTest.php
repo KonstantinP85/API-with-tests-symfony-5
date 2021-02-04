@@ -6,29 +6,42 @@ namespace App\Tests\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class CategoryControllerTest extends WebTestCase
 {
+    public $serverInformation= ['ACCEPT'=>'application/json', 'CONTENT_TYPE'=>'application/json'];
+    public $testCategory = '{"name": "new_category", "description": "category_description"}';
+
+    public function getResponseFromRequest(string $method, string $uri, string $testCategory='')
+    {
+        $client = static::createClient();
+        $client->request($method, $uri, [], [], $this->serverInformation, $testCategory);
+        return $client->getResponse();
+    }
+
+    public function testShowCategory()
+    {
+        $response = $this->getResponseFromRequest(Request::METHOD_GET, '/v3.0/category');
+        $responseContent = $response->getContent();
+        $responseDecode = json_decode($responseContent);
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertNotEmpty($responseDecode);
+        $this->assertJson($responseContent);
+    }
 
     public function testCreateCategory()
     {
-        $client = static::createClient();
-        $client->request('GET', '/v3.0/category/create');
-        $client->submitForm('Submit', [
-            'category_form[name]' => 'Name1',
-            'comment_form[description]' => 'Description1',
-            ]);
-        $this->assertResponseRedirects();
-        $client->followRedirect();              //принудительно вызываем перенаправление
-        $this->assertSelectorExists('("")');
-    }
+        $response = $this->getResponseFromRequest(Request::METHOD_POST, '/v3.0/category/create', $this->testCategory);
 
-    public function testShowCategories()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/v3.0/category');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $responseContent = $response->getContent();
+        $responseDecode = json_decode($responseContent);
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertNotEmpty($responseDecode);
+        $this->assertJson($responseContent);
     }
 
 }
