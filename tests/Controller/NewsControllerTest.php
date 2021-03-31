@@ -12,7 +12,7 @@ class NewsControllerTest extends TestController
 
     public function exampleNews()
     {
-        return '{"title": "new_news'.rand(1, 10).'", "content": "news_description'.rand(1, 10).'", "category": '.rand(1, 5).'}';
+        return '{"title": "new_n'.rand(1, 10).'", "content": "news_d'.rand(1, 10).'", "category": '.rand(1, 5).'}';
     }
 
     public function testShowNews()
