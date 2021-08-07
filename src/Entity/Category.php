@@ -24,41 +24,51 @@ class Category
      * @ORM\Column(type="integer")
      * @Groups({"category:read", "category:write"})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"category:read", "category:write"})
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"category:read", "category:write"})
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\OneToMany(targetEntity=News::class, mappedBy="category", orphanRemoval=true)
      * @Groups({"category:read", "category:write"})
      */
-    private $news;
+    private ArrayCollection $news;
 
     public function __construct()
     {
         $this->news = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -66,11 +76,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -86,6 +103,10 @@ class Category
         return $this->news;
     }
 
+    /**
+     * @param News $news
+     * @return $this
+     */
     public function addNews(News $news): self
     {
         if (!$this->news->contains($news)) {
@@ -96,6 +117,10 @@ class Category
         return $this;
     }
 
+    /**
+     * @param News $news
+     * @return $this
+     */
     public function removeNews(News $news): self
     {
         if ($this->news->removeElement($news)) {

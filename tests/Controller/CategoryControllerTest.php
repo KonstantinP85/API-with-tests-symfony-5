@@ -1,18 +1,16 @@
 <?php
 
-
 namespace App\Tests\Controller;
-
-
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class CategoryControllerTest extends TestController
 {
-
-    public function exampleCategory()
+    /**
+     * @return string
+     */
+    public function exampleCategory(): string
     {
         return '{"name": "new_category'.rand(1, 10).'", "description": "category_description'.rand(1, 10).'"}';
     }
@@ -57,6 +55,5 @@ class CategoryControllerTest extends TestController
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
-
 }
 

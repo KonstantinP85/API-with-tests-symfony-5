@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App\Tests\Controller;
-
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NewsControllerTest extends TestController
 {
-
     public function exampleNews()
     {
         return '{"title": "new_news'.rand(1, 10).'", "content": "news_description'.rand(1, 10).'", "category": '.rand(1, 5).'}';

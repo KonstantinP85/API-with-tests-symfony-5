@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Category;
 use App\Entity\News;
@@ -20,9 +18,10 @@ class NewsController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $news = $this->getDoctrine()->getRepository(News::class)->findAll();
+
         return $this->respond($news);
     }
 
@@ -31,13 +30,12 @@ class NewsController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $news = new News();
         $form = $this->createForm(NewsType::class, $news);
         $form->submit($request->request->all());
-        if (!$form->isValid())
-        {
+        if (!$form->isValid()) {
             return $this->respond($form, Response::HTTP_BAD_REQUEST);
         }
         $this->getDoctrine()->getManager()->persist($news);
@@ -45,12 +43,13 @@ class NewsController extends BaseController
 
         return $this->respond($news);
     }
+
     /**
      * @Route ("v3.0/news/{id}/update", name="news_update")
      * @param Request $request
      * @return Response
      */
-    public function updateAction(Request $request)
+    public function updateAction(Request $request): Response
     {
         $id=$request->get('id');
         $news = $this->getDoctrine()->getRepository(News::class)->findOneBy(['id'=>$id]);
@@ -59,8 +58,7 @@ class NewsController extends BaseController
         }
         $form = $this->createForm(NewsType::class, $news);
         $form->submit($request->request->all());
-        if (!$form->isValid())
-        {
+        if (!$form->isValid()) {
             return $this->respond($form, Response::HTTP_BAD_REQUEST);
         }
         $this->getDoctrine()->getManager()->persist($news);
@@ -74,7 +72,7 @@ class NewsController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $id=$request->get('id');
         $news = $this->getDoctrine()->getRepository(News::class)->findOneBy(['id'=>$id]);
